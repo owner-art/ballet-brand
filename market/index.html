@@ -1,0 +1,377 @@
+<title>시장 자료 — 발레 레이어링</title>
+<style>
+  :root {
+    --wall:#E9E9E4; --paper:#F4F4F1; --ink:#16181A; --ink-2:#3D4145;
+    --muted:#787C7C; --barre:#C6C4BC; --barre-soft:#DAD8D1;
+    --rosin:#A8763F; --rosin-soft:#F0E7DA; --slate:#46586B; --fade:#8E9290;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --wall:#161817; --paper:#1E211F; --ink:#EDEDE7; --ink-2:#C2C5C1;
+      --muted:#8D9190; --barre:#3A3E3B; --barre-soft:#2A2E2C;
+      --rosin:#C9975E; --rosin-soft:#2A2119; --slate:#8FA3B8; --fade:#767A79;
+    }
+  }
+  :root[data-theme="dark"] {
+    --wall:#161817; --paper:#1E211F; --ink:#EDEDE7; --ink-2:#C2C5C1;
+    --muted:#8D9190; --barre:#3A3E3B; --barre-soft:#2A2E2C;
+    --rosin:#C9975E; --rosin-soft:#2A2119; --slate:#8FA3B8; --fade:#767A79;
+  }
+  :root[data-theme="light"] {
+    --wall:#E9E9E4; --paper:#F4F4F1; --ink:#16181A; --ink-2:#3D4145;
+    --muted:#787C7C; --barre:#C6C4BC; --barre-soft:#DAD8D1;
+    --rosin:#A8763F; --rosin-soft:#F0E7DA; --slate:#46586B; --fade:#8E9290;
+  }
+
+  * { box-sizing:border-box; }
+  body {
+    margin:0; background:var(--wall); color:var(--ink);
+    font-family:"Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+    font-size:16px; line-height:1.8; -webkit-font-smoothing:antialiased; word-break:keep-all;
+  }
+  .display {
+    font-family:"Didot","Bodoni 72","Big Caslon","Hoefler Text",
+      "AppleMyungjo","Nanum Myeongjo","Apple SD Gothic Neo",serif;
+  }
+  .fig, table { font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; }
+
+  .wrap { max-width:900px; margin:0 auto; padding:0 28px 140px; }
+
+  .barre { height:1px; background:var(--barre); transform-origin:left center; }
+  @media (prefers-reduced-motion: no-preference) {
+    .barre { animation:draw 1.1s cubic-bezier(.22,.61,.36,1) both; }
+    @keyframes draw { from { transform:scaleX(0); } to { transform:scaleX(1); } }
+  }
+
+  .cover { padding:120px 0 0; }
+  .eyebrow { font-size:11px; letter-spacing:.28em; text-transform:uppercase; color:var(--muted); margin:0 0 56px; font-weight:600; }
+  .statement { font-size:clamp(31px,5.4vw,54px); line-height:1.3; letter-spacing:-.018em; font-weight:400; margin:0; max-width:17ch; text-wrap:balance; }
+  .cover-sub { margin:40px 0 0; font-size:17.5px; line-height:1.72; color:var(--ink-2); max-width:50ch; }
+  .cover-meta { margin-top:60px; padding-top:20px; border-top:1px solid var(--barre); display:flex; flex-wrap:wrap; gap:8px 32px; font-size:12.5px; color:var(--muted); }
+
+  .movement { margin-top:112px; }
+  .mv-head { display:flex; align-items:baseline; gap:20px; flex-wrap:wrap; margin-bottom:10px; }
+  .mv-term { font-size:24px; font-style:italic; color:var(--rosin); line-height:1; }
+  .mv-gloss { font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  .mv-title { font-size:clamp(23px,3.2vw,31px); line-height:1.38; letter-spacing:-.014em; font-weight:400; margin:20px 0 0; max-width:24ch; text-wrap:balance; }
+  .movement > .barre { margin-top:18px; }
+
+  .body { margin-top:36px; }
+  p { margin:0 0 20px; max-width:62ch; }
+  .lead { font-size:18px; line-height:1.72; color:var(--ink-2); }
+  strong { font-weight:700; }
+  .mark { color:var(--rosin); font-weight:700; }
+  ul { margin:0 0 20px; padding-left:19px; max-width:62ch; }
+  li { margin-bottom:11px; }
+  li::marker { color:var(--muted); }
+
+  figure { margin:44px 0; padding:0; }
+  .fg-title { font-size:14.5px; font-weight:700; margin:0 0 6px; }
+  .fg-sub { font-size:12.5px; color:var(--muted); margin:0 0 26px; }
+  figcaption { font-size:12.5px; color:var(--muted); margin-top:20px; line-height:1.65; max-width:58ch; }
+  .rows { display:grid; gap:13px; }
+  .row { display:grid; grid-template-columns:92px 1fr 56px; gap:14px; align-items:center; }
+  .r-name { font-size:14px; text-align:right; color:var(--ink-2); }
+  .row.lead-row .r-name { color:var(--ink); font-weight:700; }
+  .track { position:relative; height:14px; background:linear-gradient(to right, transparent calc(50% - .5px), var(--barre) calc(50% - .5px), var(--barre) calc(50% + .5px), transparent calc(50% + .5px)); }
+  .fill { position:absolute; top:0; height:14px; }
+  .fill.pos { left:50%; background:var(--rosin); }
+  .fill.neg { right:50%; background:var(--fade); }
+  .r-val { font-size:13px; font-weight:700; text-align:right; }
+  .r-val.pos { color:var(--rosin); }
+  .r-val.neg { color:var(--muted); }
+
+  .bars { display:grid; gap:11px; }
+  .brow { display:grid; grid-template-columns:96px 1fr; gap:14px; align-items:center; }
+  .b-name { font-size:14px; text-align:right; color:var(--ink-2); }
+  .brow.lead-row .b-name { color:var(--ink); font-weight:700; }
+  .b-track { display:flex; align-items:center; gap:10px; }
+  .b-fill { height:13px; background:var(--fade); }
+  .brow.lead-row .b-fill { background:var(--rosin); }
+  .b-val { font-size:13px; font-weight:700; color:var(--ink-2); }
+  .brow.lead-row .b-val { color:var(--rosin); }
+
+  .t-scroll { overflow-x:auto; margin:36px 0; border-top:1px solid var(--barre); border-bottom:1px solid var(--barre); }
+  table { width:100%; border-collapse:collapse; font-size:14px; min-width:560px; }
+  caption { text-align:left; font-size:12.5px; color:var(--muted); padding:14px 0; border-bottom:1px solid var(--barre-soft); }
+  th, td { padding:12px 14px; text-align:right; border-bottom:1px solid var(--barre-soft); white-space:nowrap; }
+  th:first-child, td:first-child { text-align:left; white-space:normal; padding-left:0; }
+  th:last-child, td:last-child { padding-right:0; }
+  thead th { font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-weight:700; }
+  tbody tr:last-child td { border-bottom:0; }
+  td.name { font-weight:600; }
+  td.dim { color:var(--muted); }
+  td.acc { color:var(--rosin); font-weight:700; }
+  tr.hl td { background:var(--rosin-soft); }
+
+  .rail { margin:34px 0 40px; }
+  .rail-name { font-size:14.5px; font-weight:700; margin-bottom:20px; }
+  .rail-track { position:relative; height:26px; }
+  .rail-line { position:absolute; top:12px; left:0; right:0; height:1px; background:var(--barre); }
+  .dot { position:absolute; top:7px; width:11px; height:11px; border-radius:50%; transform:translateX(-50%); }
+  .dot.a { background:var(--fade); }
+  .dot.b { background:var(--slate); width:15px; height:15px; top:5px; }
+  .dot.c { background:var(--rosin); }
+  .rail-marks { position:relative; height:38px; font-size:11.5px; }
+  .rail-mark { position:absolute; transform:translateX(-50%); text-align:center; line-height:1.4; white-space:nowrap; }
+  .rail-mark b { display:block; font-size:13.5px; }
+  .rail-mark.a { color:var(--muted); }
+  .rail-mark.b { color:var(--slate); }
+  .rail-mark.c { color:var(--rosin); }
+
+  .note { margin:40px 0; padding:22px 0 22px 26px; border-left:2px solid var(--rosin); }
+  .note p { margin:0; max-width:56ch; font-size:15.5px; line-height:1.7; }
+  .note p + p { margin-top:12px; }
+  .note-h { font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--rosin); font-weight:700; margin-bottom:12px; }
+  .note.quiet { border-left-color:var(--barre); }
+  .note.quiet .note-h { color:var(--muted); }
+
+  .close { margin-top:112px; padding-top:40px; border-top:1px solid var(--barre); }
+  .colophon { margin-top:40px; font-size:12px; color:var(--muted); line-height:1.75; }
+
+  @media (max-width:680px) {
+    .cover { padding-top:76px; }
+    .row { grid-template-columns:66px 1fr 48px; gap:9px; }
+    .brow { grid-template-columns:74px 1fr; gap:9px; }
+    .rail-mark { font-size:10.5px; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="cover">
+    <p class="eyebrow">Market Notes · 시장 자료</p>
+    <h1 class="statement display">모든 운동이 식는 동안 발레만 올라왔다</h1>
+    <p class="cover-sub">
+      네이버 검색 데이터와 실판매가 392개로 정리한 국내 발레·애슬레저 시장 관찰 기록.
+    </p>
+    <div class="cover-meta">
+      <span>발레 레이어링 브랜드</span>
+      <span>시장 자료</span>
+      <span>2026년 9월 1일</span>
+    </div>
+  </header>
+
+  <section class="movement">
+    <div class="mv-head">
+      <span class="mv-term display">i.</span>
+      <span class="mv-gloss">수요 — 어디가 자라는가</span>
+    </div>
+    <h2 class="mv-title display">전년 같은 달과 비교하면 방향이 분명해진다</h2>
+    <div class="barre"></div>
+    <div class="body">
+      <figure>
+        <p class="fg-title">검색 관심도 · 2025년 8월 대비 2026년 8월</p>
+        <p class="fg-sub">계절 요인을 제거하기 위해 같은 달끼리 비교했다 · 네이버 데이터랩</p>
+        <div class="rows">
+          <div class="row lead-row"><span class="r-name">발레</span><div class="track"><div class="fill pos" style="width:18.3%"></div></div><span class="r-val pos">+22.0%</span></div>
+          <div class="row"><span class="r-name">요가</span><div class="track"><div class="fill neg" style="width:8.2%"></div></div><span class="r-val neg">−9.8%</span></div>
+          <div class="row"><span class="r-name">필라테스</span><div class="track"><div class="fill neg" style="width:18.8%"></div></div><span class="r-val neg">−22.6%</span></div>
+          <div class="row"><span class="r-name">발레코어</span><div class="track"><div class="fill neg" style="width:22.6%"></div></div><span class="r-val neg">−27.1%</span></div>
+          <div class="row"><span class="r-name">러닝</span><div class="track"><div class="fill neg" style="width:41.8%"></div></div><span class="r-val neg">−50.1%</span></div>
+        </div>
+        <figcaption>
+          발레와 발레코어가 정반대로 갈렸다. 이름은 같지만 <strong>실제로 발레를 하는 수요</strong>와
+          <strong>패션 트렌드로 소비되는 수요</strong>는 완전히 다른 시장이라는 뜻이다.
+        </figcaption>
+      </figure>
+
+      <figure>
+        <p class="fg-title">최고점 대비 현재 유지율 · 종목 9종</p>
+        <p class="fg-sub">각 종목의 3~5년 내 최고 지수를 100으로 놓았을 때 2026년 8월 값</p>
+        <div class="bars">
+          <div class="brow lead-row"><span class="b-name">발레</span><div class="b-track"><div class="b-fill" style="width:94%"></div><span class="b-val">94%</span></div></div>
+          <div class="brow"><span class="b-name">라인댄스</span><div class="b-track"><div class="b-fill" style="width:56%"></div><span class="b-val">56%</span></div></div>
+          <div class="brow"><span class="b-name">요가</span><div class="b-track"><div class="b-fill" style="width:47%"></div><span class="b-val">47%</span></div></div>
+          <div class="brow"><span class="b-name">폴댄스</span><div class="b-track"><div class="b-fill" style="width:45%"></div><span class="b-val">45%</span></div></div>
+          <div class="brow"><span class="b-name">러닝</span><div class="b-track"><div class="b-fill" style="width:45%"></div><span class="b-val">45%</span></div></div>
+          <div class="brow"><span class="b-name">필라테스</span><div class="b-track"><div class="b-fill" style="width:42%"></div><span class="b-val">42%</span></div></div>
+          <div class="brow"><span class="b-name">테니스</span><div class="b-track"><div class="b-fill" style="width:26%"></div><span class="b-val">26%</span></div></div>
+          <div class="brow"><span class="b-name">클라이밍</span><div class="b-track"><div class="b-fill" style="width:20%"></div><span class="b-val">20%</span></div></div>
+          <div class="brow"><span class="b-name">리듬체조</span><div class="b-track"><div class="b-fill" style="width:16%"></div><span class="b-val">16%</span></div></div>
+          <div class="brow"><span class="b-name">배드민턴</span><div class="b-track"><div class="b-fill" style="width:8%"></div><span class="b-val">8%</span></div></div>
+        </div>
+        <figcaption>
+          배드민턴은 2024년 올림픽 직후 정점을 찍고 8%까지 내려왔다. 피겨스케이팅은 2026년 2월
+          동계올림픽으로 지수 100을 기록한 뒤 반년 만에 4.2가 되어 비교에서 제외했다.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="movement">
+    <div class="mv-head">
+      <span class="mv-term display">ii.</span>
+      <span class="mv-gloss">구조 — 애슬레저에서 벌어지는 일</span>
+    </div>
+    <h2 class="mv-title display">시장은 무너지는 것이 아니라 한 곳으로 모이는 중이다</h2>
+    <div class="barre"></div>
+    <div class="body">
+      <p class="lead">
+        수요가 두 자릿수로 빠지는데 1위 매출만 늘고 있다. 새 수요가 생긴 것이 아니라
+        무너진 브랜드의 몫을 1위가 가져가는 것이다.
+      </p>
+      <div class="t-scroll">
+        <table>
+          <caption>애슬레저 상위 브랜드 · 매출과 검색 추이</caption>
+          <thead><tr><th>주체</th><th>매출</th><th>브랜드 검색 8주</th><th>상태</th></tr></thead>
+          <tbody>
+            <tr><td class="name">카테고리 전체</td><td class="dim">요가 −9.8% · 필라 −22.6%</td><td class="dim">상품어 −5~32%</td><td class="dim">수축</td></tr>
+            <tr><td class="name">1위 안다르</td><td class="acc">2026년 2분기 +33%</td><td class="acc">+0.2%</td><td>점유율 흡수</td></tr>
+            <tr><td class="name">2위 젝시믹스</td><td class="dim">2025년 +0.9%</td><td class="dim">−12.5%</td><td class="dim">정체</td></tr>
+            <tr><td class="name">3위 뮬라웨어</td><td class="dim">파산 절차</td><td class="dim">−35.8%</td><td class="dim">퇴출</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        공시와 검색 데이터로 역산한 안다르의 월 총매출은 <strong>297억원</strong>이다. 공시된 실적과의
+        오차가 0.1%였다. 룰루레몬코리아는 월 <strong>206~238억원</strong>으로 추정된다.
+        성숙시장의 통합 국면에서 나타나는 전형적인 모습이다.
+      </p>
+      <div class="note">
+        <p class="note-h">발레는 아직 그 단계가 아니다</p>
+        <p>
+          발레의 최대 브랜드가 월 <strong>10,940</strong>회 검색된다. 안다르의 <strong class="mark">1.7%</strong>다.
+          지배자가 없고 수요는 자라고 있으며 가격이 무너지지 않았다.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="movement">
+    <div class="mv-head">
+      <span class="mv-term display">iii.</span>
+      <span class="mv-gloss">지도 — 발레 생태계의 구조</span>
+    </div>
+    <h2 class="mv-title display">월 20만 회가 도는 생태계, 상품 이름은 그중 일부일 뿐</h2>
+    <div class="barre"></div>
+    <div class="body">
+      <div class="t-scroll">
+        <table>
+          <caption>발레 검색 생태계 206,000회의 층별 구성 · 월간</caption>
+          <thead><tr><th>층</th><th>검색량</th><th>비중</th></tr></thead>
+          <tbody>
+            <tr><td class="name">입구 — 학원 · 성인발레 · 취미발레</td><td>48,065</td><td class="dim">23.3%</td></tr>
+            <tr class="hl"><td class="name">몸 — 발레바 28,750 포함</td><td>36,285</td><td>17.6%</td></tr>
+            <tr><td class="name">옷</td><td>47,530</td><td class="dim">23.1%</td></tr>
+            <tr><td class="name">신발 · 용품</td><td>16,375</td><td class="dim">7.9%</td></tr>
+            <tr><td class="name">패션 — 발레코어</td><td class="dim">3,705</td><td class="dim">1.8%</td></tr>
+            <tr><td class="name">브랜드</td><td class="dim">20,660</td><td class="dim">10.0%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        가장 큰 층은 옷이 아니라 <strong>입구</strong>다. '발레학원' 한 단어가 '발레복'보다 크다.
+        발레 수요의 시작점은 옷을 사는 순간이 아니라 <strong>배우기로 마음먹는 순간</strong>이라는 뜻이다.
+      </p>
+      <div class="note quiet">
+        <p class="note-h">눈에 띄는 두 가지</p>
+        <p>
+          <strong>유아·아동.</strong> 유아발레복이 월 9,320회로 성인의 2.5배다. 결제자가 학부모라는 뜻이고,
+          다치지 않게 몸을 데운다는 이야기는 본인보다 자녀에게 훨씬 잘 전달된다.
+        </p>
+        <p>
+          <strong>집에서 하는 발레.</strong> '발레바' 한 단어가 월 28,750회로 발레복보다 크다.
+          학원에 다니는 사람만큼 집에서 하는 사람이 있다는 신호다.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="movement">
+    <div class="mv-head">
+      <span class="mv-term display">iv.</span>
+      <span class="mv-gloss">가격 — 같은 옷, 세 개의 값</span>
+    </div>
+    <h2 class="mv-title display">채널이 가격을 정한다</h2>
+    <div class="barre"></div>
+    <div class="body">
+      <p class="lead">
+        발레 전문몰 두 곳과 일반 패션 플랫폼의 실판매가 392개를 품목별로 모았다.
+        같은 물건이 어느 매대에 놓이느냐에 따라 값이 서너 배 달라진다.
+      </p>
+
+      <div class="rail">
+        <p class="rail-name">워밍업 팬츠 · 표본 93개</p>
+        <div class="rail-track">
+          <div class="rail-line"></div>
+          <div class="dot a" style="left:27.7%"></div>
+          <div class="dot b" style="left:74.3%"></div>
+          <div class="dot c" style="left:100%"></div>
+        </div>
+        <div class="rail-marks">
+          <span class="rail-mark a" style="left:27.7%"><b>24,400</b>발레 대중몰</span>
+          <span class="rail-mark b" style="left:74.3%"><b>65,400</b>일반 패션</span>
+          <span class="rail-mark c" style="left:92%"><b>88,000</b>발레 프리미엄</span>
+        </div>
+      </div>
+
+      <div class="rail">
+        <p class="rail-name">랩스커트 · 표본 68개</p>
+        <div class="rail-track">
+          <div class="rail-line"></div>
+          <div class="dot a" style="left:23.2%"></div>
+          <div class="dot b" style="left:73.6%"></div>
+          <div class="dot c" style="left:100%"></div>
+        </div>
+        <div class="rail-marks">
+          <span class="rail-mark a" style="left:23.2%"><b>17,600</b>발레 대중몰</span>
+          <span class="rail-mark b" style="left:73.6%"><b>55,890</b>일반 패션</span>
+          <span class="rail-mark c" style="left:92%"><b>75,900</b>발레 프리미엄</span>
+        </div>
+      </div>
+
+      <div class="rail">
+        <p class="rail-name">레그워머 · 표본 65개 — 유일하게 순서가 다르다</p>
+        <div class="rail-track">
+          <div class="rail-line"></div>
+          <div class="dot a" style="left:20.2%"></div>
+          <div class="dot b" style="left:31.7%"></div>
+          <div class="dot c" style="left:100%"></div>
+        </div>
+        <div class="rail-marks">
+          <span class="rail-mark a" style="left:14%"><b>9,650</b>발레 대중몰</span>
+          <span class="rail-mark b" style="left:38%"><b>15,150</b>일반 패션</span>
+          <span class="rail-mark c" style="left:92%"><b>47,800</b>발레 프리미엄</span>
+        </div>
+      </div>
+
+      <div class="note">
+        <p class="note-h">레그워머가 알려주는 것</p>
+        <p>
+          다른 품목은 일반 패션 가격이 발레 프리미엄에 가까운데, 레그워머만 대중몰 쪽에 붙어 있다.
+          일반 패션에서 레그워머는 <strong>양말</strong>이고, 발레에서는 <strong>기능성 제품</strong>이기 때문이다.
+          <strong class="mark">같은 물건인데 매대가 가격을 다섯 배 바꾼다.</strong>
+        </p>
+      </div>
+
+      <p>
+        일반 패션 채널에서 워밍업 팬츠는 대형 스포츠 브랜드가 장악하고 있다. 표본 41개 중
+        한 브랜드가 11개를 차지했다. 반면 랩스커트 45개는 같은 브랜드가 두 번 나온 경우가 거의 없다.
+        <strong>같은 채널 안에서도 품목마다 경쟁 밀도가 전혀 다르다.</strong>
+      </p>
+    </div>
+  </section>
+
+  <footer class="close">
+    <div class="mv-head">
+      <span class="mv-term display">nota bene</span>
+      <span class="mv-gloss">이 자료의 한계</span>
+    </div>
+    <div class="body">
+      <ul>
+        <li><strong>네이버쇼핑 전체 분포는 담지 못했다.</strong> 쇼핑검색 API가 종료되고 웹페이지는 자동 조회가 차단되어, 전문몰과 일반 플랫폼의 카테고리 실판매가로 대체했다. 개인 셀러의 저가 물량이 빠져 대중가 하단이 실제보다 높게 잡혔을 수 있다.</li>
+        <li><strong>정가 기준이다.</strong> 할인과 쿠폰을 반영하지 않았다. 실거래가는 10~20% 낮을 수 있다.</li>
+        <li><strong>일반 패션은 중앙값을 썼다.</strong> 랩스커트 260,000원 같은 이상치가 평균을 왜곡하기 때문이다.</li>
+        <li><strong>검색량은 보정치다.</strong> 네이버 검색광고 키워드도구의 월간 수치이며 표본 기반 반올림이 적용되어 있다. 절대값보다 상대 비교에 쓰는 것이 정확하다.</li>
+        <li><strong>매출 추정은 모델이다.</strong> 안다르 297억원은 공시 실적과 오차 0.1%로 검증됐지만, 룰루레몬 추정치는 대조할 실측치가 아직 없다.</li>
+      </ul>
+      <p class="colophon">
+        데이터 출처 — 네이버 검색광고 키워드도구(월간 절대 검색수), 네이버 데이터랩 검색어트렌드 및
+        쇼핑인사이트, 발레 전문몰 2곳과 일반 패션 플랫폼의 카테고리 실판매가 392개,
+        금융감독원 전자공시 및 언론 보도. 조회 기준일 2026년 9월 1일.
+      </p>
+    </div>
+  </footer>
+
+</div>
