@@ -6,36 +6,24 @@
     --rosin:#A8763F; --rosin-soft:#F0E7DA; --slate:#46586B; --fade:#8E9290;
   }
   @media (prefers-color-scheme: dark) {
-    :root {
-      --wall:#161817; --paper:#1E211F; --ink:#EDEDE7; --ink-2:#C2C5C1;
+    :root { --wall:#161817; --paper:#1E211F; --ink:#EDEDE7; --ink-2:#C2C5C1;
       --muted:#8D9190; --barre:#3A3E3B; --barre-soft:#2A2E2C;
-      --rosin:#C9975E; --rosin-soft:#2A2119; --slate:#8FA3B8; --fade:#767A79;
-    }
+      --rosin:#C9975E; --rosin-soft:#2A2119; --slate:#8FA3B8; --fade:#767A79; }
   }
-  :root[data-theme="dark"] {
-    --wall:#161817; --paper:#1E211F; --ink:#EDEDE7; --ink-2:#C2C5C1;
+  :root[data-theme="dark"] { --wall:#161817; --paper:#1E211F; --ink:#EDEDE7; --ink-2:#C2C5C1;
     --muted:#8D9190; --barre:#3A3E3B; --barre-soft:#2A2E2C;
-    --rosin:#C9975E; --rosin-soft:#2A2119; --slate:#8FA3B8; --fade:#767A79;
-  }
-  :root[data-theme="light"] {
-    --wall:#E9E9E4; --paper:#F4F4F1; --ink:#16181A; --ink-2:#3D4145;
+    --rosin:#C9975E; --rosin-soft:#2A2119; --slate:#8FA3B8; --fade:#767A79; }
+  :root[data-theme="light"] { --wall:#E9E9E4; --paper:#F4F4F1; --ink:#16181A; --ink-2:#3D4145;
     --muted:#787C7C; --barre:#C6C4BC; --barre-soft:#DAD8D1;
-    --rosin:#A8763F; --rosin-soft:#F0E7DA; --slate:#46586B; --fade:#8E9290;
-  }
+    --rosin:#A8763F; --rosin-soft:#F0E7DA; --slate:#46586B; --fade:#8E9290; }
 
   * { box-sizing:border-box; }
-  body {
-    margin:0; background:var(--wall); color:var(--ink);
+  body { margin:0; background:var(--wall); color:var(--ink);
     font-family:"Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
-    font-size:16px; line-height:1.8; -webkit-font-smoothing:antialiased; word-break:keep-all;
-  }
-  .display {
-    font-family:"Didot","Bodoni 72","Big Caslon","Hoefler Text",
-      "AppleMyungjo","Nanum Myeongjo","Apple SD Gothic Neo",serif;
-  }
+    font-size:16px; line-height:1.8; -webkit-font-smoothing:antialiased; word-break:keep-all; }
+  .display { font-family:"Didot","Bodoni 72","Big Caslon","Hoefler Text","AppleMyungjo","Nanum Myeongjo","Apple SD Gothic Neo",serif; }
   .fig, table { font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; }
-
-  .wrap { max-width:900px; margin:0 auto; padding:0 28px 140px; }
+  .wrap { max-width:920px; margin:0 auto; padding:0 28px 140px; }
 
   .barre { height:1px; background:var(--barre); transform-origin:left center; }
   @media (prefers-reduced-motion: no-preference) {
@@ -46,10 +34,18 @@
   .cover { padding:120px 0 0; }
   .eyebrow { font-size:11px; letter-spacing:.28em; text-transform:uppercase; color:var(--muted); margin:0 0 56px; font-weight:600; }
   .statement { font-size:clamp(31px,5.4vw,54px); line-height:1.3; letter-spacing:-.018em; font-weight:400; margin:0; max-width:17ch; text-wrap:balance; }
-  .cover-sub { margin:40px 0 0; font-size:17.5px; line-height:1.72; color:var(--ink-2); max-width:50ch; }
-  .cover-meta { margin-top:60px; padding-top:20px; border-top:1px solid var(--barre); display:flex; flex-wrap:wrap; gap:8px 32px; font-size:12.5px; color:var(--muted); }
+  .cover-sub { margin:40px 0 0; font-size:17.5px; line-height:1.72; color:var(--ink-2); max-width:52ch; }
+  .cover-meta { margin-top:56px; padding-top:20px; border-top:1px solid var(--barre); display:flex; flex-wrap:wrap; gap:8px 32px; font-size:12.5px; color:var(--muted); }
 
-  .movement { margin-top:112px; }
+  .toc { margin-top:48px; padding:26px 0 4px; border-top:1px solid var(--barre-soft); }
+  .toc-h { font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-bottom:18px; }
+  .toc ol { list-style:none; margin:0; padding:0; display:grid; gap:9px; }
+  .toc li { display:grid; grid-template-columns:36px 1fr; gap:16px; font-size:14.5px; align-items:baseline; }
+  .toc em { font-style:italic; color:var(--rosin); font-family:"Didot","Bodoni 72","Hoefler Text",serif; font-size:16px; }
+  .toc a { color:var(--ink-2); text-decoration:none; border-bottom:1px solid transparent; }
+  .toc a:hover, .toc a:focus-visible { color:var(--ink); border-bottom-color:var(--rosin); }
+
+  .movement { margin-top:112px; scroll-margin-top:24px; }
   .mv-head { display:flex; align-items:baseline; gap:20px; flex-wrap:wrap; margin-bottom:10px; }
   .mv-term { font-size:24px; font-style:italic; color:var(--rosin); line-height:1; }
   .mv-gloss { font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:600; }
@@ -64,6 +60,7 @@
   ul { margin:0 0 20px; padding-left:19px; max-width:62ch; }
   li { margin-bottom:11px; }
   li::marker { color:var(--muted); }
+  h3 { font-size:17px; font-weight:700; margin:52px 0 14px; }
 
   figure { margin:44px 0; padding:0; }
   .fg-title { font-size:14.5px; font-weight:700; margin:0 0 6px; }
@@ -103,6 +100,27 @@
   td.dim { color:var(--muted); }
   td.acc { color:var(--rosin); font-weight:700; }
   tr.hl td { background:var(--rosin-soft); }
+  .grp td { font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-weight:700; padding:16px 0 6px; border-bottom:1px solid var(--barre); }
+
+  /* chain */
+  .chain { margin:40px 0; border-top:1px solid var(--barre); }
+  .cstep { border-bottom:1px solid var(--barre-soft); padding:18px 0; display:grid; grid-template-columns:28px 1fr auto; gap:18px; align-items:baseline; }
+  .cstep.result { background:var(--rosin-soft); padding-left:16px; margin-left:-16px; padding-right:16px; margin-right:-16px; border-bottom-color:var(--barre); }
+  .c-i { font-size:12px; color:var(--muted); font-weight:700; }
+  .c-op { font-size:15px; line-height:1.55; }
+  .c-op span { display:block; font-size:12.5px; color:var(--muted); margin-top:4px; }
+  .c-val { font-size:17px; font-weight:700; white-space:nowrap; font-variant-numeric:tabular-nums; }
+  .cstep.result .c-val, .cstep.result .c-op { color:var(--rosin); }
+  .cstep.result .c-op span { color:var(--rosin); opacity:.85; }
+
+  /* scorecard */
+  .cards { display:grid; gap:1px; background:var(--barre); border:1px solid var(--barre); margin:40px 0; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); }
+  .card { background:var(--wall); padding:22px 20px; }
+  .card.miss { background:var(--rosin-soft); }
+  .grade { font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-weight:700; color:var(--muted); }
+  .card.miss .grade { color:var(--rosin); }
+  .card-claim { font-size:15.5px; font-weight:700; margin:8px 0 10px; line-height:1.4; }
+  .card-body { font-size:13.5px; line-height:1.6; color:var(--ink-2); margin:0; }
 
   .rail { margin:34px 0 40px; }
   .rail-name { font-size:14.5px; font-weight:700; margin-bottom:20px; }
@@ -128,12 +146,16 @@
 
   .close { margin-top:112px; padding-top:40px; border-top:1px solid var(--barre); }
   .colophon { margin-top:40px; font-size:12px; color:var(--muted); line-height:1.75; }
+  a { color:var(--rosin); text-underline-offset:2px; }
+  a:focus-visible { outline:2px solid var(--rosin); outline-offset:2px; }
 
   @media (max-width:680px) {
     .cover { padding-top:76px; }
     .row { grid-template-columns:66px 1fr 48px; gap:9px; }
     .brow { grid-template-columns:74px 1fr; gap:9px; }
     .rail-mark { font-size:10.5px; }
+    .cstep { grid-template-columns:22px 1fr; gap:10px; }
+    .c-val { grid-column:2; }
   }
 </style>
 
@@ -143,20 +165,31 @@
     <p class="eyebrow">Market Notes · 시장 자료</p>
     <h1 class="statement display">모든 운동이 식는 동안 발레만 올라왔다</h1>
     <p class="cover-sub">
-      네이버 검색 데이터와 실판매가 392개로 정리한 국내 발레·애슬레저 시장 관찰 기록.
+      <a href="../">「가리려고 걸쳤는데」</a>의 근거 자료.
+      네이버 검색 데이터, 공시 실적, 실판매가 392개로 시장 판단의 바탕을 정리했다.
+      추정 모델은 실제 공시와 대조해 검증했다.
     </p>
     <div class="cover-meta">
       <span>발레 레이어링 브랜드</span>
       <span>시장 자료</span>
       <span>2026년 9월 1일</span>
     </div>
+    <nav class="toc">
+      <p class="toc-h">차례</p>
+      <ol>
+        <li><em class="display">i</em><a href="#s1">어디가 자라는가</a></li>
+        <li><em class="display">ii</em><a href="#s2">애슬레저에서 벌어지는 일</a></li>
+        <li><em class="display">iii</em><a href="#s3">검색량으로 매출을 추정하는 법</a></li>
+        <li><em class="display">iv</em><a href="#s4">두 달 전 가설의 채점표</a></li>
+        <li><em class="display">v</em><a href="#s5">발레 생태계의 구조</a></li>
+        <li><em class="display">vi</em><a href="#s6">같은 옷, 세 개의 값</a></li>
+        <li><em class="display">nb</em><a href="#s7">이 자료의 한계</a></li>
+      </ol>
+    </nav>
   </header>
 
-  <section class="movement">
-    <div class="mv-head">
-      <span class="mv-term display">i.</span>
-      <span class="mv-gloss">수요 — 어디가 자라는가</span>
-    </div>
+  <section class="movement" id="s1">
+    <div class="mv-head"><span class="mv-term display">i.</span><span class="mv-gloss">수요 — 어디가 자라는가</span></div>
     <h2 class="mv-title display">전년 같은 달과 비교하면 방향이 분명해진다</h2>
     <div class="barre"></div>
     <div class="body">
@@ -199,11 +232,8 @@
     </div>
   </section>
 
-  <section class="movement">
-    <div class="mv-head">
-      <span class="mv-term display">ii.</span>
-      <span class="mv-gloss">구조 — 애슬레저에서 벌어지는 일</span>
-    </div>
+  <section class="movement" id="s2">
+    <div class="mv-head"><span class="mv-term display">ii.</span><span class="mv-gloss">구조 — 애슬레저에서 벌어지는 일</span></div>
     <h2 class="mv-title display">시장은 무너지는 것이 아니라 한 곳으로 모이는 중이다</h2>
     <div class="barre"></div>
     <div class="body">
@@ -224,39 +254,158 @@
         </table>
       </div>
       <p>
-        공시와 검색 데이터로 역산한 안다르의 월 총매출은 <strong>297억원</strong>이다. 공시된 실적과의
-        오차가 0.1%였다. 룰루레몬코리아는 월 <strong>206~238억원</strong>으로 추정된다.
-        성숙시장의 통합 국면에서 나타나는 전형적인 모습이다.
+        성숙시장의 통합 국면에서 나타나는 전형적인 모습이다. 파이가 줄어드는데 그 줄어든 파이마저
+        1위가 흡수한다. 신규 진입자에게 남는 몫이 없다.
       </p>
       <div class="note">
         <p class="note-h">발레는 아직 그 단계가 아니다</p>
         <p>
           발레의 최대 브랜드가 월 <strong>10,940</strong>회 검색된다. 안다르의 <strong class="mark">1.7%</strong>다.
           지배자가 없고 수요는 자라고 있으며 가격이 무너지지 않았다.
+          흩어져 있다는 것은 자리가 남아 있다는 뜻이다.
         </p>
       </div>
     </div>
   </section>
 
-  <section class="movement">
-    <div class="mv-head">
-      <span class="mv-term display">iii.</span>
-      <span class="mv-gloss">지도 — 발레 생태계의 구조</span>
+  <section class="movement" id="s3">
+    <div class="mv-head"><span class="mv-term display">iii.</span><span class="mv-gloss">방법 — 검색량으로 매출을 읽는다</span></div>
+    <h2 class="mv-title display">브랜드 검색 한 번은 약 4,000원어치다</h2>
+    <div class="barre"></div>
+    <div class="body">
+      <p class="lead">
+        공시가 없는 브랜드의 규모를 가늠하기 위해, 매출이 공개된 세 회사로 계수를 뽑았다.
+        결과가 서로 10% 안에 모였다.
+      </p>
+      <div class="t-scroll">
+        <table>
+          <caption>브랜드 검색 바스켓 대비 월 매출 — 계수 도출</caption>
+          <thead><tr><th>브랜드</th><th>월 검색 바스켓</th><th>월 매출 (공시)</th><th>원 / 검색 1회</th></tr></thead>
+          <tbody>
+            <tr><td class="name">안다르</td><td>680,315</td><td>297.0억</td><td class="acc">4,366</td></tr>
+            <tr><td class="name">젝시믹스</td><td>560,680</td><td>228.4억</td><td class="acc">4,074</td></tr>
+            <tr><td class="name">룰루레몬코리아</td><td>515,855</td><td>183.1억</td><td class="acc">3,549</td></tr>
+            <tr class="hl"><td class="name">평균</td><td class="dim">—</td><td class="dim">—</td><td>3,996</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        검색 바스켓은 단일어만 세지 않는다. 오타 변형, 채널 탐색어(매장·아울렛·세일),
+        주요 상품 조합어를 같은 규칙으로 묶었다. 세 브랜드 모두 동일한 방식이다.
+      </p>
+
+      <h3>모델이 맞는지 실제 실적으로 확인했다</h3>
+      <p>
+        안다르 자사몰의 월 결제액 352.1억원을 출발점으로, 공개된 채널 비중을 적용해 총매출을 역산했다.
+      </p>
+      <div class="chain">
+        <div class="cstep"><span class="c-i">01</span><div class="c-op">자사몰 월 결제액<span>출발값</span></div><span class="c-val">352.1억</span></div>
+        <div class="cstep"><span class="c-i">02</span><div class="c-op">부가세 제외<span>÷ 1.1</span></div><span class="c-val">320.1억</span></div>
+        <div class="cstep"><span class="c-i">03</span><div class="c-op">반품·취소·쿠폰 차감<span>× 0.65~0.70 — 애슬레저는 사이즈 교환이 잦다</span></div><span class="c-val">208~224억</span></div>
+        <div class="cstep result"><span class="c-i">04</span><div class="c-op">자사몰 비중으로 환원<span>÷ 0.70 — 매출의 70% 이상이 공식 온라인스토어에서 발생</span></div><span class="c-val">297~320억</span></div>
+      </div>
+      <div class="note">
+        <p class="note-h">검증 결과</p>
+        <p>
+          모델 추정 <strong>297~320억원</strong>, 실제 2026년 2분기 월평균 <strong>297.0억원</strong>.
+          추정 구간의 하단이 실측치와 <strong class="mark">오차 0.1%</strong>로 맞았다.
+          검색량 계수를 역으로 적용한 값(271.9억원)까지 함께 놓으면, 서로 독립적인 두 경로가
+          실측치를 양쪽에서 감싼다.
+        </p>
+      </div>
+      <p>
+        같은 방법으로 계산한 룰루레몬코리아의 월 총매출은 <strong>206~238억원</strong>,
+        연 환산 2,470~2,860억원이다. 다만 이쪽은 대조할 실측치가 아직 없다.
+      </p>
+      <div class="note quiet">
+        <p class="note-h">검색량을 어떻게 읽어야 하는가</p>
+        <p>
+          네이버 브랜드 검색이 <strong>직접 만들어내는 매출</strong>은 자사몰의 4~5% 수준에 그친다.
+          나머지는 앱 재방문, 문자·카카오, 다른 매체 광고, 오프라인에서 나온다.
+        </p>
+        <p>
+          그런데도 매출 <strong>규모</strong>는 정확히 맞힌다. 브랜드 검색량은 유입 경로가 아니라
+          <strong>브랜드 수요의 총량을 재는 온도계</strong>이기 때문이다. 어디서 사든 사람들은
+          그 과정 어딘가에서 브랜드명을 한 번은 검색한다. 그래서 규모 추정에는 쓸 수 있지만,
+          "검색을 늘리면 매출이 는다"는 역방향 추론에는 쓸 수 없다.
+        </p>
+      </div>
     </div>
-    <h2 class="mv-title display">월 20만 회가 도는 생태계, 상품 이름은 그중 일부일 뿐</h2>
+  </section>
+
+  <section class="movement" id="s4">
+    <div class="mv-head"><span class="mv-term display">iv.</span><span class="mv-gloss">검증 — 두 달 전 가설의 채점표</span></div>
+    <h2 class="mv-title display">여섯 개 중 다섯이 맞았고, 틀린 하나가 중요했다</h2>
+    <div class="barre"></div>
+    <div class="body">
+      <p class="lead">
+        2026년 7월 7일에 작성한 시장 진입 검토서가 있다. 여덟 주가 지나 같은 키워드를 다시 뽑고,
+        그때의 판단을 지금 데이터로 채점했다.
+      </p>
+      <div class="cards">
+        <div class="card">
+          <span class="grade">적중</span>
+          <p class="card-claim">애슬레저는 하락 시장이다</p>
+          <p class="card-body">7월 판정 −35%. 실측은 전년 동월 대비 필라테스 −22.6%, 러닝 −50.1%. 브라탑은 여름 성수기인데도 −31.8% 빠졌다.</p>
+        </div>
+        <div class="card">
+          <span class="grade">적중</span>
+          <p class="card-claim">발레는 성장 시장이다</p>
+          <p class="card-body">7월 예측 +12%. 실측 +22.0%로 오히려 상회했다.</p>
+        </div>
+        <div class="card">
+          <span class="grade">적중</span>
+          <p class="card-claim">애슬레저는 과점이라 못 뚫는다</p>
+          <p class="card-body">여덟 주 사이 3위 뮬라웨어가 실제로 파산 절차에 들어갔고 검색은 −35.8%. 1위 안다르만 +0.2%로 방어했다.</p>
+        </div>
+        <div class="card">
+          <span class="grade">적중</span>
+          <p class="card-claim">수요 퍼널이 상품을 밀어올린다</p>
+          <p class="card-body">발레학원 +48.3%, 성인발레 +53.4%, 취미발레 +59.5%. 가을 학기 계절성이 섞여 있으나 전년 대비로도 +22%다.</p>
+        </div>
+        <div class="card">
+          <span class="grade">적중</span>
+          <p class="card-claim">발레는 가격이 안 무너진다</p>
+          <p class="card-body">레오타드가 2만 4천~8만 5천원대를 유지했다. 반면 애슬레저는 레깅스 6,300원 바닥 경쟁이 그대로다.</p>
+        </div>
+        <div class="card miss">
+          <span class="grade">빗나감</span>
+          <p class="card-claim">발레코어 트렌드에 올라탄다</p>
+          <p class="card-body">7월 전략의 축이었다. 실측 −27.1%, 파생 상품인 발레 스니커즈는 −55.4%. "발레 스니커즈 급증"이라는 기회는 이미 소멸했다.</p>
+        </div>
+      </div>
+      <p>
+        7월 검토서는 공급 포화도를 <strong>발레 17 대 애슬레저 214</strong>로 측정했다
+        — 검색 한 건당 경쟁 상품 수다. 그 구조적 판단이 여덟 주 뒤 <strong>뮬라웨어 파산</strong>이라는
+        사건으로 확인된 셈이다.
+      </p>
+      <div class="note">
+        <p class="note-h">틀린 하나가 방향을 바꿨다</p>
+        <p>
+          발레와 발레코어가 정반대로 움직인다는 사실이 이 채점에서 드러났다.
+          <strong>발레를 패션 트렌드로 쓰면 안 되고, 실사용 문화로 써야 한다</strong>는 것이
+          이번 조사의 가장 중요한 수정 사항이다.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="movement" id="s5">
+    <div class="mv-head"><span class="mv-term display">v.</span><span class="mv-gloss">지도 — 발레 생태계의 구조</span></div>
+    <h2 class="mv-title display">월 20만 회가 도는 생태계, 옷은 세 번째 층이다</h2>
     <div class="barre"></div>
     <div class="body">
       <div class="t-scroll">
         <table>
           <caption>발레 검색 생태계 206,000회의 층별 구성 · 월간</caption>
-          <thead><tr><th>층</th><th>검색량</th><th>비중</th></tr></thead>
+          <thead><tr><th>층</th><th>검색량</th><th>비중</th><th>주요 키워드</th></tr></thead>
           <tbody>
-            <tr><td class="name">입구 — 학원 · 성인발레 · 취미발레</td><td>48,065</td><td class="dim">23.3%</td></tr>
-            <tr class="hl"><td class="name">몸 — 발레바 28,750 포함</td><td>36,285</td><td>17.6%</td></tr>
-            <tr><td class="name">옷</td><td>47,530</td><td class="dim">23.1%</td></tr>
-            <tr><td class="name">신발 · 용품</td><td>16,375</td><td class="dim">7.9%</td></tr>
-            <tr><td class="name">패션 — 발레코어</td><td class="dim">3,705</td><td class="dim">1.8%</td></tr>
-            <tr><td class="name">브랜드</td><td class="dim">20,660</td><td class="dim">10.0%</td></tr>
+            <tr><td class="name">입구</td><td>48,065</td><td class="dim">23.3%</td><td class="dim">발레학원 24,840 · 성인발레 9,620</td></tr>
+            <tr class="hl"><td class="name">몸</td><td>36,285</td><td>17.6%</td><td>발레바 28,750 · 발레핏 4,590</td></tr>
+            <tr><td class="name">옷</td><td>47,530</td><td class="dim">23.1%</td><td class="dim">발레복 18,560 · 레오타드 8,960</td></tr>
+            <tr><td class="name">신발 · 용품</td><td>16,375</td><td class="dim">7.9%</td><td class="dim">발레슈즈 8,870 · 발레가방 3,510</td></tr>
+            <tr><td class="name">패션</td><td class="dim">3,705</td><td class="dim">1.8%</td><td class="dim">발레코어 2,210</td></tr>
+            <tr><td class="name">브랜드</td><td class="dim">20,660</td><td class="dim">10.0%</td><td class="dim">최대 브랜드 10,940</td></tr>
           </tbody>
         </table>
       </div>
@@ -268,21 +417,24 @@
         <p class="note-h">눈에 띄는 두 가지</p>
         <p>
           <strong>유아·아동.</strong> 유아발레복이 월 9,320회로 성인의 2.5배다. 결제자가 학부모라는 뜻이고,
-          다치지 않게 몸을 데운다는 이야기는 본인보다 자녀에게 훨씬 잘 전달된다.
+          이 시장에는 프리미엄 라인이 아예 없다.
         </p>
         <p>
-          <strong>집에서 하는 발레.</strong> '발레바' 한 단어가 월 28,750회로 발레복보다 크다.
+          <strong>집에서 하는 발레.</strong> '발레바' 한 단어가 월 28,750회로 발레복보다 크고 경쟁은 낮다.
           학원에 다니는 사람만큼 집에서 하는 사람이 있다는 신호다.
         </p>
       </div>
+      <h3>장르를 넓히는 길은 막혀 있다</h3>
+      <p>
+        발레 밖의 무용 장르로 확장이 가능한지 스무 개 조합을 확인했다. 라인댄스를 제외하면 전부
+        월 열 회 남짓이고, '연습복' 자체가 마흔다섯 회다. 무용 기타 장르를 다 합쳐도
+        <strong>4,900회</strong>다. <strong>아이템 단위 검색이 성립하는 장르는 발레와 라인댄스 둘뿐이다.</strong>
+      </p>
     </div>
   </section>
 
-  <section class="movement">
-    <div class="mv-head">
-      <span class="mv-term display">iv.</span>
-      <span class="mv-gloss">가격 — 같은 옷, 세 개의 값</span>
-    </div>
+  <section class="movement" id="s6">
+    <div class="mv-head"><span class="mv-term display">vi.</span><span class="mv-gloss">가격 — 같은 옷, 세 개의 값</span></div>
     <h2 class="mv-title display">채널이 가격을 정한다</h2>
     <div class="barre"></div>
     <div class="body">
@@ -293,12 +445,8 @@
 
       <div class="rail">
         <p class="rail-name">워밍업 팬츠 · 표본 93개</p>
-        <div class="rail-track">
-          <div class="rail-line"></div>
-          <div class="dot a" style="left:27.7%"></div>
-          <div class="dot b" style="left:74.3%"></div>
-          <div class="dot c" style="left:100%"></div>
-        </div>
+        <div class="rail-track"><div class="rail-line"></div>
+          <div class="dot a" style="left:27.7%"></div><div class="dot b" style="left:74.3%"></div><div class="dot c" style="left:100%"></div></div>
         <div class="rail-marks">
           <span class="rail-mark a" style="left:27.7%"><b>24,400</b>발레 대중몰</span>
           <span class="rail-mark b" style="left:74.3%"><b>65,400</b>일반 패션</span>
@@ -308,12 +456,8 @@
 
       <div class="rail">
         <p class="rail-name">랩스커트 · 표본 68개</p>
-        <div class="rail-track">
-          <div class="rail-line"></div>
-          <div class="dot a" style="left:23.2%"></div>
-          <div class="dot b" style="left:73.6%"></div>
-          <div class="dot c" style="left:100%"></div>
-        </div>
+        <div class="rail-track"><div class="rail-line"></div>
+          <div class="dot a" style="left:23.2%"></div><div class="dot b" style="left:73.6%"></div><div class="dot c" style="left:100%"></div></div>
         <div class="rail-marks">
           <span class="rail-mark a" style="left:23.2%"><b>17,600</b>발레 대중몰</span>
           <span class="rail-mark b" style="left:73.6%"><b>55,890</b>일반 패션</span>
@@ -322,13 +466,20 @@
       </div>
 
       <div class="rail">
-        <p class="rail-name">레그워머 · 표본 65개 — 유일하게 순서가 다르다</p>
-        <div class="rail-track">
-          <div class="rail-line"></div>
-          <div class="dot a" style="left:20.2%"></div>
-          <div class="dot b" style="left:31.7%"></div>
-          <div class="dot c" style="left:100%"></div>
+        <p class="rail-name">볼레로 · 가디건 · 표본 44개</p>
+        <div class="rail-track"><div class="rail-line"></div>
+          <div class="dot a" style="left:22.0%"></div><div class="dot b" style="left:75.8%"></div><div class="dot c" style="left:100%"></div></div>
+        <div class="rail-marks">
+          <span class="rail-mark a" style="left:22%"><b>15,400</b>발레 대중몰</span>
+          <span class="rail-mark b" style="left:75.8%"><b>53,055</b>일반 패션</span>
+          <span class="rail-mark c" style="left:92%"><b>70,000</b>발레 프리미엄</span>
         </div>
+      </div>
+
+      <div class="rail">
+        <p class="rail-name">레그워머 · 표본 65개 — 유일하게 순서가 다르다</p>
+        <div class="rail-track"><div class="rail-line"></div>
+          <div class="dot a" style="left:20.2%"></div><div class="dot b" style="left:31.7%"></div><div class="dot c" style="left:100%"></div></div>
         <div class="rail-marks">
           <span class="rail-mark a" style="left:14%"><b>9,650</b>발레 대중몰</span>
           <span class="rail-mark b" style="left:38%"><b>15,150</b>일반 패션</span>
@@ -344,32 +495,34 @@
           <strong class="mark">같은 물건인데 매대가 가격을 다섯 배 바꾼다.</strong>
         </p>
       </div>
-
       <p>
         일반 패션 채널에서 워밍업 팬츠는 대형 스포츠 브랜드가 장악하고 있다. 표본 41개 중
         한 브랜드가 11개를 차지했다. 반면 랩스커트 45개는 같은 브랜드가 두 번 나온 경우가 거의 없다.
         <strong>같은 채널 안에서도 품목마다 경쟁 밀도가 전혀 다르다.</strong>
       </p>
+      <p style="font-size:14px;color:var(--muted)">
+        구체적인 가격 설계와 원가 목표는 내부 자료로 분리해 두었다.
+      </p>
     </div>
   </section>
 
-  <footer class="close">
-    <div class="mv-head">
-      <span class="mv-term display">nota bene</span>
-      <span class="mv-gloss">이 자료의 한계</span>
-    </div>
+  <footer class="close" id="s7">
+    <div class="mv-head"><span class="mv-term display">nota bene</span><span class="mv-gloss">이 자료의 한계</span></div>
     <div class="body">
       <ul>
         <li><strong>네이버쇼핑 전체 분포는 담지 못했다.</strong> 쇼핑검색 API가 종료되고 웹페이지는 자동 조회가 차단되어, 전문몰과 일반 플랫폼의 카테고리 실판매가로 대체했다. 개인 셀러의 저가 물량이 빠져 대중가 하단이 실제보다 높게 잡혔을 수 있다.</li>
         <li><strong>정가 기준이다.</strong> 할인과 쿠폰을 반영하지 않았다. 실거래가는 10~20% 낮을 수 있다.</li>
         <li><strong>일반 패션은 중앙값을 썼다.</strong> 랩스커트 260,000원 같은 이상치가 평균을 왜곡하기 때문이다.</li>
         <li><strong>검색량은 보정치다.</strong> 네이버 검색광고 키워드도구의 월간 수치이며 표본 기반 반올림이 적용되어 있다. 절대값보다 상대 비교에 쓰는 것이 정확하다.</li>
-        <li><strong>매출 추정은 모델이다.</strong> 안다르 297억원은 공시 실적과 오차 0.1%로 검증됐지만, 룰루레몬 추정치는 대조할 실측치가 아직 없다.</li>
+        <li><strong>매출 추정은 모델이다.</strong> 안다르는 공시와 오차 0.1%로 검증됐지만, 룰루레몬 추정치는 대조할 실측치가 없다. 또 공시 매출은 해외 실적을 포함한 연결 기준인데 검색량은 국내만 잡아, 해외 비중이 큰 브랜드일수록 계수가 과대평가된다.</li>
+        <li><strong>여덟 주 비교에는 계절이 섞여 있다.</strong> 발레는 가을 학기 등록 시즌이고 애슬레저는 8월이 비수기다. 그래서 방향 판단은 모두 전년 동월 대비로 했다.</li>
+        <li><strong>공급 포화도는 재측정하지 못했다.</strong> 쇼핑검색 API 종료로 등록 상품 수를 다시 셀 수 없어 7월 값(발레 17 대 애슬레저 214)을 그대로 인용했다.</li>
       </ul>
       <p class="colophon">
         데이터 출처 — 네이버 검색광고 키워드도구(월간 절대 검색수), 네이버 데이터랩 검색어트렌드 및
         쇼핑인사이트, 발레 전문몰 2곳과 일반 패션 플랫폼의 카테고리 실판매가 392개,
-        금융감독원 전자공시 및 언론 보도. 조회 기준일 2026년 9월 1일.
+        금융감독원 전자공시 및 언론 보도. 조회 기준일 2026년 9월 1일.<br>
+        본문은 <a href="../">「가리려고 걸쳤는데」</a>에 있다.
       </p>
     </div>
   </footer>
