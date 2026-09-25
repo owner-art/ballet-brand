@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "video-insight"
+version = "0.1.0"
+description = "유튜브·인스타·틱톡·로컬 영상을 읽고 분석해 프로젝트에 반영하는 CLI"
+requires-python = ">=3.10"
+dependencies = [
+  "anthropic>=1.8",
+  "pydantic>=2.7",
+  "yt-dlp>=2025.1.1",
+]
+
+[project.optional-dependencies]
+whisper = ["faster-whisper>=1.0"]
+
+[project.scripts]
+vi = "video_insight.cli:main"
+
+[tool.setuptools]
+packages = ["video_insight"]
