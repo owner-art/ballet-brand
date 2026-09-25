@@ -82,3 +82,45 @@ def strict_schema(model: type[BaseModel]) -> dict[str, Any]:
         return node
 
     return walk(schema)
+
+
+# ── research: 주제 → 검색 → 선별 → 보고서 ─────────────────────────────
+
+
+class SearchPlan(_Strict):
+    youtube_queries: list[str] = Field(description="유튜브 검색어 (한국어 위주, 필요하면 영어)")
+    social_queries: list[str] = Field(description="인스타그램 릴스·틱톡을 찾기 위한 웹 검색어")
+    rationale: str
+
+
+class Pick(_Strict):
+    index: int = Field(description="후보 목록의 번호")
+    reason: str
+
+
+class Screening(_Strict):
+    picks: list[Pick]
+    note: str = Field(description="선별 기준과 제외한 후보의 경향 한두 문장")
+
+
+class Evidence(_Strict):
+    note_id: str
+    timestamp: str = Field(description="mm:ss, 모르면 빈 문자열")
+    quote: str = Field(description="대본 인용 또는 화면 묘사")
+
+
+class Finding(_Strict):
+    finding: str
+    evidence: list[Evidence]
+    strength: Level = Field(description="몇 편이 얼마나 분명하게 뒷받침하는지")
+
+
+class ResearchReport(_Strict):
+    title: str
+    answer: str = Field(description="리서치 질문에 대한 핵심 답 3~5문장")
+    findings: list[Finding]
+    content_patterns: list[str] = Field(description="잘 되는 영상들의 형식·훅·연출 공통점")
+    disagreements: list[str] = Field(description="영상끼리 엇갈리거나 프로젝트 가설과 부딪히는 지점")
+    gaps: list[str] = Field(description="영상으로는 확인하지 못한 것, 추가로 필요한 근거")
+    implications: list[Implication]
+    next_queries: list[str] = Field(description="다음에 파볼 검색어")

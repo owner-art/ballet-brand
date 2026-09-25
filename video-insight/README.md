@@ -1,6 +1,21 @@
 # video-insight
 
-유튜브·인스타그램·틱톡 영상(그리고 로컬 영상 파일)을 **읽고, 분석하고, 내 프로젝트에 반영**하는 CLI.
+유튜브·인스타그램·틱톡 영상을 **알아서 찾고, 글로 뽑고, 분석해서, 보고하고, 내 프로젝트에 반영**하는 CLI.
+
+```bash
+vi research "성인 발레인은 수업 전에 무엇을 걸치고, 그 옷을 밖에서도 입나"
+```
+
+이 한 줄이 하는 일:
+
+```
+주제 ─▶ 검색어 설계 ─▶ 영상 찾기 ─────────────▶ 고르기 ─▶ 읽기 ─────────────▶ 보고서
+       (Claude)      유튜브: yt-dlp 검색          (Claude)   대본(.txt) 전체      발견마다 근거 영상
+                     인스타·틱톡: Claude 웹 검색              + 분석 노트(.md)     · 타임스탬프 · 인용
+                     렌즈에 등록한 계정의 최근 영상
+```
+
+URL을 직접 줄 때(`vi analyze`)의 흐름:
 
 ```
 URL ─▶ ① 받기 ─▶ ② 쪼개기 ─▶ ③ 대본 ─▶ ④ 분석 ─▶ 노트 누적 ─▶ ⑤ 반영안 + PR
@@ -32,6 +47,29 @@ export ANTHROPIC_API_KEY=sk-ant-...
 
 프로젝트 폴더에서 실행한다 (다른 곳에서는 `-C <프로젝트 경로>`).
 
+### 주제로 리서치 — 알아서 찾아서 읽고 보고
+
+```bash
+vi research "성인 발레 수업 전 워밍업 루틴과 옷"
+vi research "발레 레그워머 코디" --max 12 --recent        # 12편, 유튜브 최신순
+vi research "라인댄스 중장년 복장" --platforms youtube    # 유튜브만
+vi research "발레 볼레로 데일리룩" --platforms instagram,tiktok --cookies-from-browser chrome
+```
+
+| 옵션 | 기본 | 설명 |
+|---|---|---|
+| `--max` | 8 | 실제로 읽을 영상 수. 후보가 더 많으면 Claude가 고른다 |
+| `--per-query` | 12 | 검색어당 후보 수 |
+| `--platforms` | 전부 | `youtube,instagram,tiktok` 중에서 |
+| `--recent` | 끔 | 유튜브를 관련도순 대신 최신순으로 |
+| `--max-minutes` | 30 | 이보다 긴 영상은 후보에서 뺀다 |
+
+결과: `research/videos/reports/<날짜>-<주제>.md` — 핵심 답, 근거(영상·타임스탬프·인용)가 붙은 발견,
+잘 되는 영상의 공통점, 가설과 부딪히는 증거, 프로젝트 시사점, 다음 검색어, 읽은 영상과 대본 링크.
+이미 분석한 영상은 다시 받지 않고 노트를 재사용하므로, 같은 주제를 반복해 돌려도 새 영상만 비용이 든다.
+
+### URL로 분석
+
 ```bash
 # 영상 분석 → research/videos/ 에 노트
 vi analyze https://www.youtube.com/watch?v=XXXX
@@ -58,7 +96,9 @@ vi propose --pr                            # 브랜치 video-insight/<시각> + 
 research/videos/
   INDEX.md                        전체 목록 — 분석일, 핵심 시사점, 반영 여부
   youtube-XXXX.md                 사람이 읽는 노트: 요약·훅·시사점·렌즈 답·장면·반응
+  youtube-XXXX.txt                영상 전체 대본 ([mm:ss] 타임스탬프)
   youtube-XXXX.json               propose 단계의 입력 (원본 데이터)
+  reports/2026-09-25-주제.md       vi research 보고서
   proposals/2026-09-25-1530.md    반영안 기록: 근거 영상, 적용한 diff, 못 옮긴 인사이트, 확인할 것
 ```
 
@@ -95,6 +135,17 @@ guidelines = """문서를 고칠 때 지킬 것 (톤, 건드리지 말 부분, �
 
 한 편당 입력은 대략 키프레임 16장(약 1.5만 토큰) + 대본 + 메타데이터다.
 Claude가 안전 정책으로 거절하는 경우를 대비해 서버측 fallback(`fallbacks: "default"`)을 켜 두었다.
+
+## 찾기가 어떻게 되는가 — 플랫폼별 차이
+
+| 플랫폼 | 찾는 방법 | 대본 | 한계 |
+|---|---|---|---|
+| 유튜브 | yt-dlp 검색 (API 키 불필요). 조회수·길이·업로드일까지 보고 고른다 | 자막(자동 자막 포함) | 거의 없음 |
+| 인스타 릴스 | Claude 웹 검색으로 공개된 릴스 URL 수집 + 렌즈의 `[research] accounts` | Whisper 받아쓰기 | 인스타 자체 검색·해시태그는 로그인이 필요해 직접 못 긁는다. 웹에 색인된 릴스와 등록 계정 위주 |
+| 틱톡 | 인스타와 같음 | Whisper | 인스타와 같음 |
+
+인스타·틱톡은 대부분 자막이 없으니 `pip install -e ".[whisper]"`로 받아쓰기를 켜 두는 것을 권한다.
+꼭 봐야 할 계정이 있으면 렌즈의 `[research] accounts`에 넣어 두면 매번 최근 영상을 함께 훑는다.
 
 ## 주의
 

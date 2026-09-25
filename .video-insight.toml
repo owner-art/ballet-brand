@@ -31,3 +31,11 @@ guidelines = """
 - market/index.html 의 검색량·매출 수치는 별도 리서치 근거가 있으므로 영상만으로 바꾸지 않는다.
 - 영상 근거로 새 문장을 넣을 때는 "영상 N편에서 관찰" 수준으로 출처의 성격을 드러낸다.
 """
+
+[research]
+# vi research 가 매번 함께 훑어볼 계정·채널 (최근 영상부터). 인스타는 로그인 쿠키가 필요할 수 있다.
+accounts = [
+  # "https://www.youtube.com/@채널이름/videos",
+  # "https://www.instagram.com/계정이름/reels/",
+  # "https://www.tiktok.com/@계정이름",
+]

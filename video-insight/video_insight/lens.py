@@ -23,6 +23,7 @@ class Lens:
     notes_dir: str = "research/videos"
     language: str = "ko"
     propose_guidelines: str = ""
+    research_accounts: list[str] = field(default_factory=list)
 
     @property
     def notes_path(self) -> Path:
@@ -53,6 +54,7 @@ def load_lens(project: Path) -> Lens:
         )
     data = tomllib.loads(path.read_text(encoding="utf-8"))
     propose = data.get("propose", {})
+    research = data.get("research", {})
     return Lens(
         root=project,
         name=data["name"],
@@ -62,4 +64,5 @@ def load_lens(project: Path) -> Lens:
         notes_dir=data.get("notes_dir", "research/videos"),
         language=data.get("language", "ko"),
         propose_guidelines=propose.get("guidelines", "").strip(),
+        research_accounts=list(research.get("accounts", [])),
     )

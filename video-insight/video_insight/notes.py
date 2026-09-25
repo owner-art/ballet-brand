@@ -3,6 +3,7 @@
 notes_dir/
   <key>.json      기계가 읽는 원본 (propose 단계 입력)
   <key>.md        사람이 읽는 노트
+  <key>.txt       영상 전체 대본 (타임스탬프 포함)
   INDEX.md        전체 목록 (매번 다시 만든다)
   proposals/      반영안 기록
 """
@@ -33,8 +34,14 @@ def save(
     analysis: VideoAnalysis,
     model: str,
     transcript_source: str,
+    transcript: str | None = None,
 ) -> Path:
     notes.mkdir(parents=True, exist_ok=True)
+    if transcript:
+        (notes / f"{key}.txt").write_text(
+            f"# {info.get('title') or key}\n# {url}\n# 대본 출처: {transcript_source}\n\n{transcript}\n",
+            encoding="utf-8",
+        )
     record = {
         "id": key,
         "url": url,
@@ -42,6 +49,7 @@ def save(
         "analyzed_on": date.today().isoformat(),
         "model": model,
         "transcript_source": transcript_source,
+        "transcript_file": f"{key}.txt" if transcript else None,
         "proposed_in": None,
         "meta": {
             k: info.get(k)
@@ -54,6 +62,15 @@ def save(
     md.write_text(render(record), encoding="utf-8")
     write_index(notes)
     return md
+
+
+def load(notes: Path, key: str) -> dict[str, Any]:
+    return json.loads((notes / f"{key}.json").read_text(encoding="utf-8"))
+
+
+def transcript(notes: Path, rec: dict[str, Any]) -> str | None:
+    f = rec.get("transcript_file")
+    return (notes / f).read_text(encoding="utf-8") if f and (notes / f).exists() else None
 
 
 def load_all(notes: Path) -> list[dict[str, Any]]:
@@ -84,7 +101,8 @@ def render(rec: dict[str, Any]) -> str:
         "",
         f"- 원본: <{rec['url']}>",
         f"- 채널: {m.get('uploader') or '-'} · 업로드 {m.get('upload_date') or '-'} · {stats or '수치 없음'}",
-        f"- 분석: {rec['analyzed_on']} · {rec['model']} · 대본 출처 {rec['transcript_source']}",
+        f"- 분석: {rec['analyzed_on']} · {rec['model']} · 대본 출처 {rec['transcript_source']}"
+        + (f" · [전체 대본]({rec['transcript_file']})" if rec.get("transcript_file") else ""),
         f"- 형식: {a['format']} · 태그: {', '.join(a['tags'])}",
         "",
         "## 요약",

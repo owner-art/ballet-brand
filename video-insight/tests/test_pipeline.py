@@ -123,3 +123,65 @@ def test_analyze_then_propose(project, video, monkeypatch):
     seen.clear()
     assert cli.main(["propose", "-C", str(project)]) == 0
     assert "Proposal" not in seen
+
+
+def test_research_end_to_end(project, video, tmp_path, monkeypatch):
+    from video_insight import research as rs
+    from video_insight.schemas import ResearchReport, Screening, SearchPlan
+
+    other = tmp_path / "reel.mp4"
+    shutil.copy(video, other)
+    calls = []
+
+    def fake_ask(*, system, content, schema, model, effort="high"):
+        calls.append(schema.__name__)
+        if schema is SearchPlan:
+            return SearchPlan(youtube_queries=["성인발레 워밍업"], social_queries=["발레 레그워머 릴스"], rationale="r")
+        if schema is Screening:
+            return Screening(picks=[{"index": 0, "reason": "실사용자"}, {"index": 2, "reason": "릴스"},
+                                    {"index": 99, "reason": "없는 번호"}], note="n")
+        if schema is VideoAnalysis:
+            return VideoAnalysis.model_validate(FAKE_ANALYSIS)
+        text = "".join(c.get("text", "") for c in content)
+        assert "local-class" in text
+        return ResearchReport.model_validate({
+            "title": "성인 발레인의 워밍업 레이어", "answer": "레그워머가 먼저다.",
+            "findings": [{"finding": "워머를 먼저 신는다", "strength": "high",
+                          "evidence": [{"note_id": "local-class", "timestamp": "00:01", "quote": "워머"}]}],
+            "content_patterns": ["첫 장면에 착용"], "disagreements": [], "gaps": ["가격"],
+            "implications": [{"target": "allegro", "action": "a", "rationale": "r", "priority": "high"}],
+            "next_queries": ["발레 볼레로"],
+        })
+
+    for mod in (analyze_mod, rs):
+        monkeypatch.setattr(mod, "ask", fake_ask)
+    monkeypatch.setattr(rs, "search_youtube", lambda q, n, o, r: [
+        rs.Candidate(url=str(video), platform="youtube", title="수업 브이로그", duration=6),
+        rs.Candidate(url=str(video), platform="youtube", title="중복"),
+        rs.Candidate(url="x", platform="youtube", title="너무 긴 영상", duration=3600),
+    ])
+    monkeypatch.setattr(rs, "search_social", lambda q, p, m: [rs.Candidate(url=str(other), platform="instagram")])
+
+    # 후보 3개 → 긴 영상 제외 → 중복 제거 → 2개 ≤ max 이므로 선별 없이 전부
+    assert cli.main(["research", "-C", str(project), "성인", "발레", "--no-whisper", "--frames", "2", "--max", "5"]) == 0
+    assert "Screening" not in calls
+    report = next((project / "research/videos/reports").glob("*.md")).read_text()
+    assert "레그워머가 먼저다." in report and "`00:01`" in report and "수업 브이로그" not in report
+    assert "[성인 발레 수업 전 워밍업 루틴](../local-class.md)" in report
+    assert "(../local-reel.md)" in report  # 인스타 후보도 읽었다
+
+    # max를 줄이면 Claude가 고르고, 없는 번호는 무시된다
+    calls.clear()
+    assert cli.main(["research", "-C", str(project), "성인 발레", "--no-whisper", "--frames", "2", "--max", "1"]) == 0
+    assert calls.count("Screening") == 1 and "VideoAnalysis" not in calls  # 이미 분석한 영상은 재사용
+
+
+def test_social_url_extraction():
+    from video_insight.research import _add_social
+
+    found = {}
+    for u in ["https://www.instagram.com/reels/AbC_1/?igsh=x", "https://www.instagram.com/someone/",
+              "https://www.tiktok.com/@ballet.kr/video/123", "https://www.instagram.com/p/ZZ9/"]:
+        _add_social(found, u, "", "t")
+    assert sorted(found) == ["https://www.instagram.com/p/ZZ9", "https://www.instagram.com/reel/AbC_1",
+                             "https://www.tiktok.com/@ballet.kr/video/123"]
